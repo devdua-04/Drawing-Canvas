@@ -175,7 +175,15 @@ canvaClr.forEach((color) => {
     color.addEventListener("click", () => {
         canvasColor = color.id;
         ctx.fillStyle = canvasColor;
+        if(canvasColor === "Black") {
+            brColor = "white"; // Default stroke color for black canvas
+        }else {
+            brColor = "black"; // Default stroke color for white canvas
+        }
         ctx.fillRect(0, 0, canvas.width, canvas.height);
+        if(canvasColor === "Black") {
+            ctx.strokeStyle = "white"; // Default stroke color for white canvas
+        }
     });
 });
 
