@@ -2,79 +2,132 @@
 <html lang="en">
 
 <head>
+    <!-- Meta tags for character encoding and responsive design -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Page title -->
     <title>Document</title>
+    
+    <!-- Link to external CSS stylesheet -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
+        <!-- Tool section containing drawing tools and options -->
         <section class="tool-box">
             <div class="tool-box-item">
+
+                <!-- Row for selecting shapes -->
                 <div class="row">
-                    <label class="title">Shapes</label>
+                    <label class="title"><h2>Shapes</h2></label>
                     <ul class="options">
+                        <!-- Shape option: Circle -->
                         <li class="option tool" id="Circle">
                             <img src="circle.png" alt="" class="shape-icon">
                             <span>Circle</span>
                         </li>
+
+                        <!-- Shape option: Rectangle -->
                         <li class="option tool" id="Rectangle">
                             <img src="square.png" alt="" class="shape-icon">
                             <span>Rectangle</span>
                         </li>
+
+                        <!-- Shape option: Triangle -->
                         <li class="option tool" id="Triangle">
                             <img src="triangle.png" alt="" class="shape-icon">
                             <span>Triangle</span>
                         </li>
+
+                        <!-- Checkbox to toggle fill color -->
                         <li class="option" id="Fill-Color">
                             <input type="checkbox" id="fill-color">
                             <span>Fill-Color</span>
                         </li>
                     </ul>
                 </div>
+
+                <!-- Row for brush and eraser options -->
                 <div class="row">
-                    <label class="title">Options</label>
+                    <label class="title"><h2>Options</h2></label>
                     <ul class="options">
+                        <!-- Brush tool -->
                         <li class="option tool" id="Brush">
                             <img src="paint-brush.png" alt="">
                             <span>Brush</span>                           
                         </li>
+
+                        <!-- Brush size slider -->
                         <li class="option" id="br-size">
-                            <input type="range" class="brush-size" min="1" max="100" value="5">
+                            <input type="range" class="brush-size" min="1" max="20" value="5">
                         </li>
+
+                        <!-- Eraser tool -->
                         <li class="option tool" id="Eraser">
                             <img src="eraser.png" alt="">
                             <span>Eraser</span>
                         </li>
+
+                        <!-- Eraser size slider -->
                         <li class="option" id="er-size">
-                            <input type="range" class="eraser-size" min="1" max="100" value="5">
+                            <input type="range" class="eraser-size" min="1" max="75" value="5">
                         </li> 
                     </ul>
                 </div>
                
+                <!-- Row for selecting drawing colors -->
                 <div class="row colors">
-                    <label class="title">Colors</label>
-                        <ul class="options">
-                            <li class="option color" id="White"></li>
-                            <li class="option color" id="Black"></li>
-                            <li class="option color" id="Red"></li>
-                            <li class="option color" id="Blue"></li>
-                            <li class="CP" id="cp">
-                                <input type="color" id="color-picker" value="#ff0000">
-                            </li>
-                        </ul>
+                    <label class="title"><h2>Brush Color</h2></label>
+                    <ul class="options">
+                        <!-- Preset color options -->
+                        <li class="option color" id="White"></li>
+                        <li class="option color" id="Black"></li>
+                        <li class="option color" id="Red"></li>
+                        <li class="option color" id="Blue"></li>
+
+                        <!-- Custom color picker -->
+                        <li class="CP" id="cp">
+                            <input type="color" id="color-picker" value="#ff0000">
+                        </li>
+                    </ul>
                 </div>
+
+                <!-- Row for selecting canvas background colors -->
+                <div class="row colors">
+                    <label class="title"><h2>Canvas Color</h2></label>
+                    <ul class="options">
+                        <!-- Preset canvas background color options -->
+                        <li class="option color canvaClr" id="White"></li>
+                        <li class="option color canvaClr" id="Black"></li>
+                        <li class="option color canvaClr" id="Red"></li>
+                        <li class="option color canvaClr" id="Blue"></li>
+
+                        <!-- Custom canvas background color picker -->
+                        <li class="BG-CP" id="bg-cp">
+                            <input type="color" id="bg-color-picker" value="#ff0000">
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Row for canvas actions -->
                 <div class="row">
+                    <!-- Button to clear the canvas -->
                     <button id="clear" width=100% heigh=20px>Clear Canvas</button>
+
+                    <!-- Button to save the canvas as an image -->
                     <button id="save">Save</button>
                 </div>
             </div>
-
         </section>
+
+        <!-- Drawing canvas section -->
         <section class="drawing-canvas">
             <canvas id="canvas"></canvas>
         </section>
     </div>
+
+    <!-- Link to external JavaScript file -->
     <script src="script.js"></script>
 </body>
 </html>

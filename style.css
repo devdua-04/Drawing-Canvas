@@ -1,119 +1,137 @@
-body{
+/* Center the body content and give full height with a cyan background */
+body {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #002fff;
+    background-color: cyan;
 }
 
-.container{
+/* Main container for toolbox and canvas */
+.container {
     display: flex;
     width: 100%;
     max-width: 1800px;
     gap: 10px;
-    padding: 20px;  
+    padding: 20px;
 }
-section{
+
+/* Common section style (toolbox and canvas area) */
+section {
+    border: 1px solid black;
     background: #ffffff;
     display: flex;
     border-radius: 5px;
     gap: 10px;
 }
 
-.tool-box{
+/* Toolbox container styling */
+.tool-box {
     display: flex;
     flex-direction: column;
     width: 210px;
     gap: 10px;
     padding: 15px 22px 0px;
-    /* border-radius: black 5px; */
-    /* border: black 1px solid;  */
 }
 
-.options{
-    margin: 5px;
-    padding: 20px;
-    gap: 10px;
-    padding: 10px;
-    /* border-radius: black 5px; */
-    /* border: black 1px solid;  */
+/* Remove bullet points in lists */
+ul.options {
+    list-style-type: none;
 }
-.option{
+
+/* Style for lists inside toolbox */
+.options {
+    margin: 10px;
+    gap: 10px;
+}
+
+/* Each tool/option item styling */
+.option {
     display: flex;
     font-size: 20px;
     padding-top: 10px;
 }
-.option:hover{
-    /* background-color: #002fff; */
+
+/* Hover effect for tool/option items */
+.option:hover {
     color: #002fff;
     cursor: pointer;
     filter: invert(17%) sepia(90%) saturate(3000%) hue-rotate(180deg) brightness(100%) contrast(100%);
-    /* border-radius: 5px; */
 }
 
-.option .active{
-     color: #002fff;
-    /* cursor: pointer; */
+/* Active tool styling */
+.option .active {
+    color: #002fff;
     filter: invert(17%) sepia(90%) saturate(3000%) hue-rotate(180deg) brightness(100%) contrast(100%);
 }
-.option img{
+
+/* Icon size and spacing */
+.option img {
     width: 20px;
     height: 20px;
     margin-right: 5px;
 }
 
-/* .option img:hover{
-    
-} */
-
-.option input{
+/* Input styles for range sliders */
+.option input {
     width: 150px;
     height: 20px;
     margin-right: 5px;
 }
 
-#fill-color{
+/* Fill color checkbox size */
+#fill-color {
     width: 20px;
     height: 20px;
     margin-right: 5px;
 }
 
-.colors .options{
+/* Layout for color rows */
+.colors .options {
     display: flex;
-    /* gap: 10px; */
     justify-content: space-between;
 }
 
-.colors .option{
+/* Basic style for color circles */
+.colors .option {
     height: 18px;
     width: 18px;
-    /* background: red; */
     margin-top: 3px;
-    padding: 3px;
+    padding: 2px;
     border-radius: 50%;
     position: relative;
 }
 
-.colors .option:nth-child(1){
-    background: white;
-    border:grey 1px solid;
+/* Removes left margin for color items */
+.colors li {
+    margin-left: -30px;
 }
-.colors .option:nth-child(2){
+
+/* Predefined color styles */
+.colors .option:nth-child(1) {
+    background: white;
+    border: grey 1px solid;
+}
+.colors .option:nth-child(2) {
     background: black;
-}   
-.colors .option:nth-child(3){
+}
+.colors .option:nth-child(3) {
     background: red;
 }
-.colors .option:nth-child(4){
+.colors .option:nth-child(4) {
     background: blue;
 }
 
-.colors #color-picker{
+/* Hide default color picker input (to show only circular swatch) */
+.colors #color-picker {
     opacity: 0;
-    
+}
+#bg-color-picker {
+    opacity: 0;
 }
 
-.CP{
+/* Style for custom color circle (foreground) */
+.CP {
     height: 15px;
     width: 15px;
     background: red;
@@ -122,7 +140,20 @@ section{
     border-radius: 50%;
     position: relative;
 }
-.colors .option::before{
+
+/* Style for custom color circle (background) */
+.BG-CP {
+    height: 15px;
+    width: 15px;
+    background: red;
+    margin-top: 3px;
+    padding: 3px;
+    border-radius: 50%;
+    position: relative;
+}
+
+/* Adds inner white ring to color selectors */
+.colors .option::before {
     position: absolute;
     content: "";
     top: 50%;
@@ -133,11 +164,10 @@ section{
     border-radius: inherit;
     border: 4px solid white;
     transform: translate(-50%, -50%);
-    /* box-shadow: 0 0 0 2px white; */
 }
 
-
-.row button{
+/* Style for "Clear Canvas" button */
+#clear {
     width: 100%;
     height: 40px;
     background-color: #002fff;
@@ -148,20 +178,42 @@ section{
     margin: 12px 5px;
 }
 
-button:hover{
+/* Hover effect for "Clear Canvas" button */
+#clear:hover {
     background-color: #ffffff;
     color: #002fff;
     border: 1px solid #002fff;
 }
 
-.drawing-canvas{
-    flex: 1;
-    gap: 10px;
-    /* background-color: aqua; */
+/* Style for "Save" button */
+#save {
+    width: 100%;
+    height: 40px;
+    background-color: #002fff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 12px 5px;
 }
 
-.drawing-canvas canvas{
+/* Hover effect for "Save" button */
+#save:hover {
+    background-color: #ffffff;
+    color: #002fff;
+    border: 1px solid #002fff;
+}
+
+/* Drawing area beside toolbox */
+.drawing-canvas {
+    flex: 1;
+    gap: 10px;
+    background-color: black;
+}
+
+/* Canvas element style */
+canvas {
     width: 100%;
     height: 100%;
-    /* background-color: aqua; */
+    background-color: white;
 }
