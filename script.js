@@ -43,6 +43,8 @@ function setupCanvas() {
     resizeCanvasToDisplaySize(canvas);
     ctx.fillStyle = canvasColor;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height); // Save initial state
+    undoStack.push(snapshot); // Push initial state to undo stack
 }
 
 window.addEventListener("resize", setupCanvas);
