@@ -30,8 +30,8 @@ section {
     display: flex;
     flex-direction: column;
     width: 210px;
-    gap: 10px;
-    padding: 15px 22px 0px;
+    gap: 5px;
+    padding: 10px 22px 0px;
 }
 
 /* Remove bullet points in lists */
@@ -41,15 +41,15 @@ ul.options {
 
 /* Style for lists inside toolbox */
 .options {
-    margin: 10px;
-    gap: 10px;
+    margin: 5px;
+    gap: 5px;
 }
 
 /* Each tool/option item styling */
 .option {
     display: flex;
     font-size: 20px;
-    padding-top: 10px;
+    padding-top: 5px;
 }
 
 /* Hover effect for tool/option items */
@@ -178,11 +178,41 @@ ul.options {
     margin: 12px 5px;
 }
 
+.funtions{
+    display: flex;
+    /* flex-direction: row; */
+    justify-content: space-between;
+    justify-items: center;
+    align-items: center;
+    margin: 15px 0px;
+    margin-top: 20px;
+}
+#undo{
+    width:49%;
+    height: 40px;
+    background-color: #002fff;
+    color: white; 
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    
+}
+#redo{
+    width:49%;
+    height: 40px;
+    background-color: #002fff;
+    color: white; 
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    
+}
 /* Hover effect for "Clear Canvas" button */
 #clear:hover {
     background-color: #ffffff;
     color: #002fff;
     border: 1px solid #002fff;
+      
 }
 
 /* Style for "Save" button */

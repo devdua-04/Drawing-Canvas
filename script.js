@@ -14,8 +14,9 @@ const canvas = document.querySelector("#canvas"), // Canvas element
       brSize = document.querySelector("#br-size"), // Brush size input
       erSize = document.querySelector("#er-size"), // Eraser size input
       colorOpt = document.querySelectorAll(".color"), // Predefined brush color options
-      canvaClr = document.querySelectorAll(".canvaClr"); // Predefined canvas color options
-
+      canvaClr = document.querySelectorAll(".canvaClr"), // Predefined canvas color options
+      undoBtn = document.querySelector("#undo"), // Undo button
+      redoBtn = document.querySelector("#redo"); // Redo button
 // === Drawing-related Variables ===
 let prevX, prevY; // Previous X, Y coordinates
 let brushSize = 5; // Initial brush size
@@ -24,7 +25,9 @@ let isDrawing = false; // Is mouse pressed and moving
 let brColor = "#000"; // Default brush color (black)
 let activeTool = "Brush"; // Default tool
 let canvasColor = "white"; // Default canvas background color
-
+let undoStack = []; // Stack for undo functionality
+let snapshot; // Snapshot of the canvas for undo functionality
+let redoStack = []; // Stack for redo functionality
 // === Utility to Resize Canvas on Window Resize ===
 function resizeCanvasToDisplaySize(canvas) {
     const width = canvas.clientWidth;
@@ -128,6 +131,10 @@ canvas.addEventListener("mousemove", drawing);
 canvas.addEventListener("mouseup", (event) => {
     isDrawing = false;
     ctx.beginPath(); // Reset path
+    ctx.closePath(); // Close path
+    snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height); // Save current state
+    undoStack.push(snapshot); // Push current state to undo stack
+
 });
 
 // === Tool Selection Handling ===
@@ -208,4 +215,21 @@ saveBtn.addEventListener("click", () => {
     link.download = "canvas.png";
     link.href = canvas.toDataURL();
     link.click();
+});
+
+// === Undo Functionality ===
+undoBtn.addEventListener("click", () => {
+    if (undoStack.length > 0) {
+        redoStack.push(snapshot); // Push current state to redo stack
+        snapshot = undoStack.pop(); // Pop last state from undo stack
+        ctx.putImageData(snapshot, 0, 0); // Restore canvas state
+    }
+}); 
+// === Redo Functionality ===
+redoBtn.addEventListener("click", () => {
+    if (redoStack.length > 0) {
+        undoStack.push(snapshot); // Push current state to undo stack
+        snapshot = redoStack.pop(); // Pop last state from redo stack
+        ctx.putImageData(snapshot, 0, 0); // Restore canvas state
+    }
 });
