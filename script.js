@@ -1,40 +1,44 @@
 console.log("Hello, World!");
 
 // === Canvas and UI Element References ===
-const canvas = document.querySelector("#canvas"), // Canvas element
-      ctx = canvas.getContext("2d"), // Canvas drawing context
-      toolBtn = document.querySelectorAll(".tool"), // All tool buttons (brush, rectangle, etc.)
-      checkBox = document.querySelector("#fill-color"), // Fill color checkbox
-      colorPicker = document.querySelector("#color-picker"), // Foreground color input
-      bgColorPicker = document.querySelector("#bg-color-picker"), // Background color input
-      cp = document.getElementById("cp"), // Foreground color preview circle
-      bgCp = document.getElementById("bg-cp"), // Background color preview circle
-      clearBtn = document.querySelector("#clear"), // Clear button
-      saveBtn = document.querySelector("#save"), // Save button
-      brSize = document.querySelector("#br-size"), // Brush size input
-      erSize = document.querySelector("#er-size"), // Eraser size input
-      colorOpt = document.querySelectorAll(".color"), // Predefined brush color options
-      canvaClr = document.querySelectorAll(".canvaClr"), // Predefined canvas color options
-      undoBtn = document.querySelector("#undo"), // Undo button
-      redoBtn = document.querySelector("#redo"); // Redo button
-// === Drawing-related Variables ===
-let prevX, prevY; // Previous X, Y coordinates
-let brushSize = 5; // Initial brush size
-let eraserSize = 5; // Initial eraser size
-let isDrawing = false; // Is mouse pressed and moving
-let brColor = "#000"; // Default brush color (black)
-let activeTool = "Brush"; // Default tool
-let canvasColor = "white"; // Default canvas background color
-let undoStack = []; // Stack for undo functionality
-let snapshot; // Snapshot of the canvas for undo functionality
-let redoStack = []; // Stack for redo functionality
+const canvas = document.querySelector("#canvas"),
+      ctx = canvas.getContext("2d"),
+      toolBtn = document.querySelectorAll(".tool"),
+      checkBox = document.querySelector("#fill-color"),
+      colorPicker = document.querySelector("#color-picker"),
+      bgColorPicker = document.querySelector("#bg-color-picker"),
+      cp = document.getElementById("cp"),
+      bgCp = document.getElementById("bg-cp"),
+      clearBtn = document.querySelector("#clear"),
+      saveBtn = document.querySelector("#save"),
+      brSize = document.querySelector("#br-size"),
+      erSize = document.querySelector("#er-size"),
+      colorOpt = document.querySelectorAll(".color"),
+      canvaClr = document.querySelectorAll(".canvaClr"),
+      undoBtn = document.querySelector("#undo"),
+      redoBtn = document.querySelector("#redo");
+
+let prevX, prevY;
+let brushSize = 5;
+let eraserSize = 5;
+let isDrawing = false;
+let brColor = "#000";
+let activeTool = "Brush";
+let canvasColor = "white";
+let undoStack = [];
+let redoStack = [];
+let snapshot;
+
 // === Utility to Resize Canvas on Window Resize ===
 function resizeCanvasToDisplaySize(canvas) {
     const width = canvas.clientWidth;
     const height = canvas.clientHeight;
+
     if (canvas.width !== width || canvas.height !== height) {
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
         canvas.width = width;
         canvas.height = height;
+        ctx.putImageData(imageData, 0, 0);
     }
 }
 
@@ -43,30 +47,27 @@ function setupCanvas() {
     resizeCanvasToDisplaySize(canvas);
     ctx.fillStyle = canvasColor;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height); // Save initial state
-    undoStack.push(snapshot); // Push initial state to undo stack
+    snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    undoStack.push(snapshot);
 }
 
 window.addEventListener("resize", setupCanvas);
-setupCanvas(); // Initial setup
+window.addEventListener("load", setupCanvas);
 
 // === Drawing Logic ===
 const drawing = (event) => {
     if (!isDrawing) return;
-    console.log("Drawing");
-    ctx.lineWidth = brushSize;
     const x = event.offsetX;
     const y = event.offsetY;
 
-    // === Brush Tool ===
+    ctx.lineWidth = brushSize;
+
     if (activeTool === "Brush") {
         ctx.strokeStyle = brColor;
         ctx.lineTo(x, y);
         ctx.stroke();
         ctx.beginPath();
         ctx.moveTo(x, y);
-
-    // === Rectangle Tool ===
     } else if (activeTool === "Rectangle") {
         ctx.putImageData(snapshot, 0, 0);
         const width = x - prevX;
@@ -76,39 +77,36 @@ const drawing = (event) => {
             ctx.fillStyle = brColor;
             ctx.fillRect(prevX, prevY, width, height);
         } else {
+            ctx.strokeStyle = brColor;
             ctx.strokeRect(prevX, prevY, width, height);
         }
-
-    // === Circle Tool ===
     } else if (activeTool === "Circle") {
         ctx.putImageData(snapshot, 0, 0);
-        const radius = Math.sqrt(Math.pow(x - prevX, 2) + Math.pow(y - prevY, 2));
+        const radius = Math.sqrt((x - prevX) ** 2 + (y - prevY) ** 2);
         ctx.beginPath();
-        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.arc(prevX, prevY, radius, 0, Math.PI * 2);
         ctx.closePath();
         if (checkBox.checked) {
             ctx.fillStyle = brColor;
             ctx.fill();
         } else {
+            ctx.strokeStyle = brColor;
             ctx.stroke();
         }
-
-    // === Triangle Tool ===
     } else if (activeTool === "Triangle") {
         ctx.putImageData(snapshot, 0, 0);
         ctx.beginPath();
         ctx.moveTo(prevX, prevY);
         ctx.lineTo(x, y);
-        ctx.lineTo(prevX * 2 - x, y); // Symmetrical third point
+        ctx.lineTo(prevX * 2 - x, y);
         ctx.closePath();
         if (checkBox.checked) {
             ctx.fillStyle = brColor;
             ctx.fill();
         } else {
+            ctx.strokeStyle = brColor;
             ctx.stroke();
         }
-
-    // === Eraser Tool ===
     } else if (activeTool === "Eraser") {
         ctx.lineWidth = eraserSize;
         ctx.strokeStyle = canvasColor;
@@ -118,33 +116,63 @@ const drawing = (event) => {
     }
 };
 
-// === Mouse Event Listeners for Drawing ===
+// === Mouse Event Listeners ===
 canvas.addEventListener("mousedown", (event) => {
     isDrawing = true;
     prevX = event.offsetX;
     prevY = event.offsetY;
     ctx.beginPath();
     ctx.moveTo(prevX, prevY);
-    snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height); // Save canvas state
+    snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
 });
 
 canvas.addEventListener("mousemove", drawing);
 
-canvas.addEventListener("mouseup", (event) => {
+canvas.addEventListener("mouseup", () => {
     isDrawing = false;
-    ctx.beginPath(); // Reset path
-    ctx.closePath(); // Close path
-    snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height); // Save current state
-    undoStack.push(snapshot); // Push current state to undo stack
-
+    ctx.beginPath();
+    ctx.closePath();
+    snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    undoStack.push(snapshot);
 });
 
-// === Tool Selection Handling ===
+// === Touch Support ===
+canvas.addEventListener("touchstart", (e) => {
+    const touch = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    prevX = touch.clientX - rect.left;
+    prevY = touch.clientY - rect.top;
+    isDrawing = true;
+    ctx.beginPath();
+    ctx.moveTo(prevX, prevY);
+    snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    e.preventDefault();
+});
+
+canvas.addEventListener("touchmove", (e) => {
+    if (!isDrawing) return;
+    const touch = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    drawing({
+        offsetX: touch.clientX - rect.left,
+        offsetY: touch.clientY - rect.top,
+    });
+    e.preventDefault();
+});
+
+canvas.addEventListener("touchend", () => {
+    isDrawing = false;
+    ctx.closePath();
+    snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    undoStack.push(snapshot);
+});
+
+// === Tool Selection ===
 toolBtn.forEach((btn) => {
     btn.addEventListener("click", () => {
-        toolBtn.forEach((btn) => btn.classList.remove("active")); // Remove active from all
-        btn.classList.add("active"); // Set current as active
-        activeTool = btn.id; // Set active tool
+        toolBtn.forEach((btn) => btn.classList.remove("active"));
+        btn.classList.add("active");
+        activeTool = btn.id;
     });
 });
 
@@ -152,7 +180,7 @@ toolBtn.forEach((btn) => {
 brSize.addEventListener("input", (event) => {
     brushSize = event.target.value;
     ctx.lineWidth = brushSize;
-    activeTool = "Brush"; // Automatically switch to brush
+    activeTool = "Brush";
 });
 
 // === Eraser Size Control ===
@@ -160,10 +188,10 @@ erSize.addEventListener("input", (event) => {
     eraserSize = event.target.value;
     ctx.lineWidth = eraserSize;
     ctx.strokeStyle = canvasColor;
-    activeTool = "Eraser"; // Automatically switch to eraser
+    activeTool = "Eraser";
 });
 
-// === Predefined Brush Color Options ===
+// === Brush Colors (predefined) ===
 colorOpt.forEach((color) => {
     color.addEventListener("click", () => {
         brColor = color.id;
@@ -171,32 +199,29 @@ colorOpt.forEach((color) => {
     });
 });
 
-// === Custom Foreground Color Picker ===
+// === Custom Foreground Color ===
 colorPicker.addEventListener("input", (event) => {
     brColor = event.target.value;
     ctx.strokeStyle = brColor;
-    cp.style.backgroundColor = brColor;
     ctx.fillStyle = brColor;
+    cp.style.backgroundColor = brColor;
 });
 
-// === Predefined Canvas Background Colors ===
+// === Predefined Canvas Colors ===
 canvaClr.forEach((color) => {
     color.addEventListener("click", () => {
         canvasColor = color.id;
         ctx.fillStyle = canvasColor;
-        if(canvasColor === "Black") {
-            brColor = "white"; // Default stroke color for black canvas
-        }else {
-            brColor = "black"; // Default stroke color for white canvas
-        }
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        if(canvasColor === "Black") {
-            ctx.strokeStyle = "white"; // Default stroke color for white canvas
+        if (canvasColor === "Black") {
+            brColor = "white";
+        } else {
+            brColor = "black";
         }
     });
 });
 
-// === Custom Canvas Background Color Picker ===
+// === Custom Background Color ===
 bgColorPicker.addEventListener("input", (event) => {
     canvasColor = event.target.value;
     bgCp.style.backgroundColor = canvasColor;
@@ -204,14 +229,14 @@ bgColorPicker.addEventListener("input", (event) => {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 });
 
-// === Clear Button Functionality ===
+// === Clear Canvas ===
 clearBtn.addEventListener("click", () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = canvasColor;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 });
 
-// === Save Button Functionality (Download as PNG) ===
+// === Save as Image ===
 saveBtn.addEventListener("click", () => {
     const link = document.createElement("a");
     link.download = "canvas.png";
@@ -219,19 +244,19 @@ saveBtn.addEventListener("click", () => {
     link.click();
 });
 
-// === Undo Functionality ===
+// === Undo/Redo ===
 undoBtn.addEventListener("click", () => {
     if (undoStack.length > 0) {
-        redoStack.push(snapshot); // Push current state to redo stack
-        snapshot = undoStack.pop(); // Pop last state from undo stack
-        ctx.putImageData(snapshot, 0, 0); // Restore canvas state
+        redoStack.push(snapshot);
+        snapshot = undoStack.pop();
+        ctx.putImageData(snapshot, 0, 0);
     }
-}); 
-// === Redo Functionality ===
+});
+
 redoBtn.addEventListener("click", () => {
     if (redoStack.length > 0) {
-        undoStack.push(snapshot); // Push current state to undo stack
-        snapshot = redoStack.pop(); // Pop last state from redo stack
-        ctx.putImageData(snapshot, 0, 0); // Restore canvas state
+        undoStack.push(snapshot);
+        snapshot = redoStack.pop();
+        ctx.putImageData(snapshot, 0, 0);
     }
 });
