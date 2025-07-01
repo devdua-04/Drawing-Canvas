@@ -2,21 +2,21 @@ console.log("Hello, World!");
 
 // === Canvas and UI Element References ===
 const canvas = document.querySelector("#canvas"),
-      ctx = canvas.getContext("2d"),
-      toolBtn = document.querySelectorAll(".tool"),
-      checkBox = document.querySelector("#fill-color"),
-      colorPicker = document.querySelector("#color-picker"),
-      bgColorPicker = document.querySelector("#bg-color-picker"),
-      cp = document.getElementById("cp"),
-      bgCp = document.getElementById("bg-cp"),
-      clearBtn = document.querySelector("#clear"),
-      saveBtn = document.querySelector("#save"),
-      brSize = document.querySelector("#br-size"),
-      erSize = document.querySelector("#er-size"),
-      colorOpt = document.querySelectorAll(".color"),
-      canvaClr = document.querySelectorAll(".canvaClr"),
-      undoBtn = document.querySelector("#undo"),
-      redoBtn = document.querySelector("#redo");
+    ctx = canvas.getContext("2d"),
+    toolBtn = document.querySelectorAll(".tool"),
+    checkBox = document.querySelector("#fill-color"),
+    colorPicker = document.querySelector("#color-picker"),
+    bgColorPicker = document.querySelector("#bg-color-picker"),
+    cp = document.getElementById("cp"),
+    bgCp = document.getElementById("bg-cp"),
+    clearBtn = document.querySelector("#clear"),
+    saveBtn = document.querySelector("#save"),
+    brSize = document.querySelector("#br-size"),
+    erSize = document.querySelector("#er-size"),
+    colorOpt = document.querySelectorAll(".color"),
+    canvaClr = document.querySelectorAll(".canvaClr"),
+    undoBtn = document.querySelector("#undo"),
+    redoBtn = document.querySelector("#redo");
 
 let prevX, prevY;
 let brushSize = 5;
@@ -82,10 +82,12 @@ const drawing = (event) => {
         }
     } else if (activeTool === "Circle") {
         ctx.putImageData(snapshot, 0, 0);
-        const radius = Math.sqrt((x - prevX) ** 2 + (y - prevY) ** 2);
+        // Improved Circle Logic
+        const radius = Math.sqrt(Math.pow(x - prevX, 2) + Math.pow(y - prevY, 2));
         ctx.beginPath();
         ctx.arc(prevX, prevY, radius, 0, Math.PI * 2);
         ctx.closePath();
+
         if (checkBox.checked) {
             ctx.fillStyle = brColor;
             ctx.fill();
