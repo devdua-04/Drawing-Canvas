@@ -21,15 +21,11 @@ body {
   display: flex;
   flex-direction: row;
   gap: 20px;
-  max-width: 1600px;
   width: 100%;
-  height: auto;
-  max-height: 95vh;
+  height: 90vh;
+  max-width: 1600px;
   padding: 20px;
   margin: auto;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: stretch;
 }
 
 /* Toolbox Section */
@@ -37,12 +33,12 @@ body {
   display: flex;
   flex-direction: column;
   width: 300px;
+  height: 100%;
   padding: 20px;
   gap: 20px;
   background-color: #f3f3f3;
   border-radius: 8px;
   overflow-y: auto;
-  max-height: 85vh;
 }
 
 /* Each row block in toolbox */
@@ -50,7 +46,6 @@ body {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  margin-bottom: 20px;
 }
 
 /* Section titles */
@@ -66,15 +61,7 @@ body {
   gap: 12px;
 }
 
-/* Range sliders */
-#br-size input,
-#er-size input {
-  width: 100%;
-  height: 24px;
-  accent-color: #002fff;
-  cursor: pointer;
-}
-
+/* Sliders */
 input[type="range"] {
   width: 100%;
   height: 24px;
@@ -195,11 +182,12 @@ ul.options {
   cursor: pointer;
   font-size: 16px;
   margin-top: 10px;
+  width: 100%;
 }
 
 #undo,
 #redo {
-  flex: 1;
+  width: 48%;
 }
 
 #clear:hover,
@@ -236,7 +224,6 @@ canvas {
   .container {
     flex-direction: column;
     height: auto;
-    align-items: stretch;
   }
 
   .tool-box {
