@@ -13,6 +13,7 @@ body {
   justify-content: center;
   align-items: center;
   padding: 20px;
+  font-family: sans-serif;
 }
 
 /* Main Container */
@@ -22,11 +23,11 @@ body {
   gap: 20px;
   max-width: 1600px;
   width: 100%;
-  max-height: 95vh;
   height: 90vh;
   padding: 20px;
   margin: auto;
   flex-wrap: wrap;
+  justify-content: center;
   align-items: stretch;
 }
 
@@ -34,7 +35,7 @@ body {
 .tool-box {
   display: flex;
   flex-direction: column;
-  width: 260px;
+  width: 300px;
   padding: 20px;
   gap: 20px;
   background-color: #f3f3f3;
@@ -42,13 +43,12 @@ body {
   overflow-y: auto;
 }
 
-/* Toolbox Rows */
+/* Each row block in toolbox */
 .tool-box .row {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 20px;
 }
 
 /* Section titles */
@@ -56,33 +56,24 @@ body {
   font-weight: bold;
   font-size: 16px;
   color: #333;
-  margin-bottom: 6px;
 }
 
 /* Buttons group */
 .funtions {
   display: flex;
-  justify-content: space-between;
   gap: 12px;
-  margin-top: 10px;
 }
 
-/* Sliders */
-#br-size,
-#er-size {
-  width: 100%;
-  padding: 4px 0;
-}
-
+/* Range sliders */
 #br-size input,
 #er-size input {
   width: 100%;
-  height: 18px;
+  height: 24px;
   accent-color: #002fff;
   cursor: pointer;
 }
 
-/* Options list */
+/* Option groups */
 ul.options {
   display: flex;
   flex-wrap: wrap;
@@ -97,7 +88,7 @@ ul.options {
   font-size: 16px;
   gap: 10px;
   cursor: pointer;
-  padding: 4px 6px;
+  padding: 6px 8px;
   border-radius: 4px;
   transition: background 0.2s;
 }
@@ -126,14 +117,14 @@ ul.options {
 /* Colors section */
 .colors .options {
   display: flex;
-  gap: 12px;
+  gap: 14px;
+  padding: 6px 0;
   flex-wrap: wrap;
-  padding: 4px 0;
 }
 
 .colors .option {
-  height: 24px;
-  width: 24px;
+  height: 26px;
+  width: 26px;
   border-radius: 50%;
   position: relative;
   cursor: pointer;
@@ -175,8 +166,8 @@ ul.options {
 
 .CP,
 .BG-CP {
-  height: 24px;
-  width: 24px;
+  height: 26px;
+  width: 26px;
   background: red;
   border-radius: 50%;
   position: relative;
@@ -194,14 +185,12 @@ ul.options {
   border-radius: 8px;
   cursor: pointer;
   font-size: 16px;
-  width: 100%;
   margin-top: 10px;
 }
 
 #undo,
 #redo {
-  width: 48%;
-  margin-top: 0;
+  flex: 1;
 }
 
 #clear:hover,
@@ -221,6 +210,7 @@ ul.options {
   align-items: center;
   height: 100%;
   background-color: transparent;
+  min-width: 300px;
 }
 
 canvas {
@@ -232,12 +222,8 @@ canvas {
   display: block;
 }
 
-/* Responsive: Tablet */
+/* Responsive: Tablets */
 @media (max-width: 1024px) {
-  body {
-    align-items: flex-start;
-  }
-
   .container {
     flex-direction: column;
     height: auto;
@@ -250,12 +236,10 @@ canvas {
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 16px;
-    padding: 15px;
   }
 
   .tool-box .row {
-    flex: 1 1 45%;
+    flex: 1 1 48%;
     min-width: 220px;
   }
 
@@ -271,7 +255,6 @@ canvas {
     flex-direction: column;
     width: 100%;
     padding: 10px;
-    gap: 16px;
   }
 
   .tool-box .row {
@@ -288,5 +271,16 @@ canvas {
   #redo {
     font-size: 14px;
     padding: 8px;
+  }
+
+  .colors .option {
+    height: 22px;
+    width: 22px;
+  }
+
+  .CP,
+  .BG-CP {
+    height: 22px;
+    width: 22px;
   }
 }
