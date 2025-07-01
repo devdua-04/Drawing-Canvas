@@ -42,12 +42,13 @@ body {
   overflow-y: auto;
 }
 
-/* Each row block in toolbox */
+/* Toolbox Rows */
 .tool-box .row {
   display: flex;
   flex-direction: column;
   gap: 12px;
   margin-bottom: 16px;
+  flex-wrap: wrap;
 }
 
 /* Section titles */
@@ -66,7 +67,7 @@ body {
   margin-top: 10px;
 }
 
-/* Range sliders */
+/* Sliders */
 #br-size,
 #er-size {
   width: 100%;
@@ -81,7 +82,7 @@ body {
   cursor: pointer;
 }
 
-/* Option groups */
+/* Options list */
 ul.options {
   display: flex;
   flex-wrap: wrap;
@@ -248,6 +249,14 @@ canvas {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 15px;
+  }
+
+  .tool-box .row {
+    flex: 1 1 45%;
+    min-width: 220px;
   }
 
   .drawing-canvas {
@@ -262,6 +271,11 @@ canvas {
     flex-direction: column;
     width: 100%;
     padding: 10px;
+    gap: 16px;
+  }
+
+  .tool-box .row {
+    width: 100%;
   }
 
   .option {
